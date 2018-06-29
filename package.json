@@ -9,13 +9,21 @@
   "author": "peter",
   "license": "MIT",
   "dependencies": {
+    "babel-eslint": "^8.2.5",
     "body-parser": "^1.18.3",
+    "eslint-config-babel": "^7.0.2",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.49.3",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.0.1",
+    "eslint-config-google": "^0.9.1",
+    "prettier": "1.13.7"
   }
 }
