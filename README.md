@@ -1,5 +1,7 @@
 #ES6 => Common Js
+<br/>
 #install babel 2018 
+<br />
     1. Install cli babel
         cmd : npm install --save-dev babel-cli
         cmd : npm install babel-preset-env --save-dev
