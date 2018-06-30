@@ -9,11 +9,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const port = 3000;
 
 _app2.default.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send(`Something broke!`);
+  console.error(err.stack);
+  next(err);
 });
 
 _app2.default.listen(port, () => {
-    console.log(`Listen from port : ${port}`);
+  console.log(`Listen from port : ${port}`);
 });
 //# sourceMappingURL=index.js.map

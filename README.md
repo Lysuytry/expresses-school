@@ -24,9 +24,9 @@
 <br/>
 #install nodemon
 <br/>
-__1. Install nodemon module
+1. Install nodemon module
 <br/>
-        ____cmd : npm install nodemon
+        cmd : npm install nodemon
 <br/>
     2. Copy nodemon.json inside mine to your project for customize nodemon options.
 <br/>
@@ -70,3 +70,6 @@ __1. Install nodemon module
 <br/>
     2. copy my file to your project
 <br/>
+#install dot env for environment file
+</br>
+    1. Install cmd: npm install dotenv
