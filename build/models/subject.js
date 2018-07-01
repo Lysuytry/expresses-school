@@ -12,7 +12,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const subjectSchema = (0, _mongoose.Schema)({
   name: { type: String, required: true },
-  teacher: String,
+  teachers: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'Teacher', required: true }],
   status: { type: String, default: 'active' }
 }, { timestamps: true });
 

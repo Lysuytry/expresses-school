@@ -28,11 +28,21 @@ var _student = require('./api/student/student.route');
 
 var _student2 = _interopRequireDefault(_student);
 
+var _subject = require('./api/subject/subject.route');
+
+var _subject2 = _interopRequireDefault(_subject);
+
 var _teacher = require('./api/teacher/teacher.route');
 
 var _teacher2 = _interopRequireDefault(_teacher);
 
+var _score = require('./api/score/score.route');
+
+var _score2 = _interopRequireDefault(_score);
+
 var _constant = require('./common/constant');
+
+var _query = require('./common/query');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45,16 +55,22 @@ _mongoose2.default.connect(process.env.CONNECT, _constant.mongoDBOptions, err =>
 const app = new _express2.default();
 
 app.use((req, res, next) => {
+
   //response fail
   res.fail = (message, code = 400) => {
     console.log(message);
     return res.status(code).json({ message });
   };
+
   //response success
   res.success = (data, options, code = 200) => {
     data = typeof data === 'object' ? { data, options } : { message: data };
     return res.status(code).json(data);
   };
+
+  //check query limit , skip and status
+  (0, _query.customizeQuery)(req);
+
   next();
 });
 
@@ -64,6 +80,8 @@ app.use(_bodyParser2.default.urlencoded({ extended: false }));
 
 app.use(_constant.ENDPOINT, _student2.default);
 app.use(_constant.ENDPOINT, _teacher2.default);
+app.use(_constant.ENDPOINT, _subject2.default);
+app.use(_constant.ENDPOINT, _score2.default);
 
 exports.default = app;
 //# sourceMappingURL=app.js.map

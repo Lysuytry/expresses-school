@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/common/validatorSchema.js"],"names":["validateTeacher"],"mappings":";;;;;;;AAAA;;;;;;AAEO,MAAMA,4CAAkB,EAAxB","file":"validatorSchema.js","sourcesContent":["import validator from 'validator';\n\nexport const validateTeacher = {\n\n};\n"]}

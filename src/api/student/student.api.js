@@ -2,8 +2,12 @@ import Student from '../../models/student';
 
 export const getStudentList = async (req, res) => {
   try{
-    const [students, total] = await Promise.all([Student.find(), Student.count()]);
-    const options = {total};
+    const {limit, skip, status} = req.query;
+    const fliterMatch = {$and: [{status}]};
+    const countCondition = [{status} ];
+    const conditions = [ {$match: {...fliterMatch}}, {$skip: skip}, {$limit: limit}];
+    const [students, total] = await Promise.all([Student.aggregate(conditions), Student.count(...countCondition)]);
+    const options = {limit, skip, total};
     res.success(students, options);
   } catch( error ){
     res.fail(error);
@@ -24,10 +28,37 @@ export const createStudent = async (req, res) => {
 
 export const getStudentById = async (req, res) => {
   try{
-    const { id } = req.query;
-    const student = await Student.findOne(id);
-    res.success(student);
+    const { id } = req.params;
+    const { status } = req.query;
+    const student = await Student.findOne({_id: id, status});
+    student ? res.success(student) : res.success({});
   } catch(error){
     res.fail(error);
+  }
+};
+
+export const updateStudentById = async (req, res) => {
+  try{
+    const data = req.body;
+    const {id} = req.params;
+    const {status} = req.query;
+    const conditions =[{_id: id, status}, {$set: data}];
+    const result = await Student.updateOne(...conditions);
+    console.log(result);
+    res.success('Successfully updated.');
+  } catch(error){
+    res.fail(error);
+  }
+};
+
+export const deleteStudentById = async (req, res) => {
+  try{
+    const {id} = req.params;
+    const {status} = req.query;
+    const conditions = [{_id: id, status}, {$set: {status: 'inactive'}}];
+    await Student.updateOne(...conditions);
+    res.success('Succesfully deleted.');
+  } catch(error){
+    res.fail(error.message);
   }
 };

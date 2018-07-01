@@ -16,10 +16,11 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-flowtype": "^2.49.3",
     "express": "^4.16.3",
+    "joi": "^13.4.0",
+    "joi-objectid": "^2.0.0",
     "mongoose": "^5.1.7",
     "morgan": "^1.9.0",
-    "nodemon": "^1.17.5",
-    "validator": "^10.4.0"
+    "nodemon": "^1.17.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

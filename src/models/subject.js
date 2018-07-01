@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 const subjectSchema = Schema({
   name: {type: String, required: true},
-  teacher: String,
+  teachers: [{type: Schema.Types.ObjectId, ref: 'Teacher', required: true}],
   status: {type: String, default: 'active'},
 }, {timestamps: true});
 

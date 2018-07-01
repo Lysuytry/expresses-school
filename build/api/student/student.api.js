@@ -3,7 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
+exports.deleteStudentById = exports.updateStudentById = exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _student = require('../../models/student');
 
@@ -13,8 +15,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const getStudentList = exports.getStudentList = async (req, res) => {
   try {
-    const [students, total] = await Promise.all([_student2.default.find(), _student2.default.count()]);
-    const options = { total };
+    const { limit, skip, status } = req.query;
+    const fliterMatch = { $and: [{ status }] };
+    const countCondition = [{ status }];
+    const conditions = [{ $match: _extends({}, fliterMatch) }, { $skip: skip }, { $limit: limit }];
+    const [students, total] = await Promise.all([_student2.default.aggregate(conditions), _student2.default.count(...countCondition)]);
+    const options = { limit, skip, total };
     res.success(students, options);
   } catch (error) {
     res.fail(error);
@@ -35,11 +41,38 @@ const createStudent = exports.createStudent = async (req, res) => {
 
 const getStudentById = exports.getStudentById = async (req, res) => {
   try {
-    const { id } = req.query;
-    const student = await _student2.default.findOne(id);
-    res.success(student);
+    const { id } = req.params;
+    const { status } = req.query;
+    const student = await _student2.default.findOne({ _id: id, status });
+    student ? res.success(student) : res.success({});
   } catch (error) {
     res.fail(error);
+  }
+};
+
+const updateStudentById = exports.updateStudentById = async (req, res) => {
+  try {
+    const data = req.body;
+    const { id } = req.params;
+    const { status } = req.query;
+    const conditions = [{ _id: id, status }, { $set: data }];
+    const result = await _student2.default.updateOne(...conditions);
+    console.log(result);
+    res.success('Successfully updated.');
+  } catch (error) {
+    res.fail(error);
+  }
+};
+
+const deleteStudentById = exports.deleteStudentById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.query;
+    const conditions = [{ _id: id, status }, { $set: { status: 'inactive' } }];
+    await _student2.default.updateOne(...conditions);
+    res.success('Succesfully deleted.');
+  } catch (error) {
+    res.fail(error.message);
   }
 };
 //# sourceMappingURL=student.api.js.map
