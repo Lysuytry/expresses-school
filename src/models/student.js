@@ -7,7 +7,7 @@ const studentSchema = Schema({
   birthday: {type: Date},
   email: String,
   telephone: String,
-  subjects: [ {type: Schema.Types.ObjectId, ref: `Subject`, required:true} ],
+  subjects: [ {type: Schema.Types.ObjectId, ref: `Subject`, required: true} ],
   status: {type: String, default: 'active'}
 }, {timestamps: true});
 

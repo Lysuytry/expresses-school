@@ -51,9 +51,9 @@ const validateUpdatingStudent = exports.validateUpdatingStudent = (req, res, nex
   try {
     const { first, last, gender, birthday, email, telephone, subjects } = req.body;
     const error = _joi2.default.validate({ first, last, gender, birthday, email, telephone, subjects }, updateStudentValidator);
-    error.error === null ? next() : res.fail(error);
+    error.error === null ? next() : res.fail(error.error);
   } catch (error) {
-    res.fail(error);
+    res.fail(error.message);
   }
 };
 //# sourceMappingURL=student.middleware.js.map

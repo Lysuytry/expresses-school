@@ -10,9 +10,9 @@ const createScoreValidator = Joi.object().keys({
     {
       subject: Joi.objectId().required(),
       subjectName: Joi.string().required(),
-      socre: Joi.number()
+      socre: Joi.number().max(101).min(0)
     }
-  ).with('subject', 'score').with('subject', 'subjectName'))
+  ))
 });
 
 const updateScoreValidator = Joi.object().keys({
@@ -22,9 +22,9 @@ const updateScoreValidator = Joi.object().keys({
     {
       subject: Joi.objectId(),
       subjectName: Joi.string(),
-      socre: Joi.number()
+      socre: Joi.number().max(101).min(0)
     }
-  ).with('subject', 'score').with('subject', 'subjectName'))
+  ))
 });
 
 const validator = (req, schema) => {

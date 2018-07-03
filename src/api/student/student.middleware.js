@@ -37,8 +37,8 @@ export const validateUpdatingStudent = (req, res, next) => {
   try{
     const {first, last, gender, birthday, email, telephone, subjects} = req.body;
     const error = Joi.validate({first, last, gender, birthday, email, telephone, subjects}, updateStudentValidator);
-    error.error === null ? next() : res.fail(error);
+    error.error === null ? next() : res.fail(error.error);
   } catch(error){
-    res.fail(error);
+    res.fail(error.message);
   }
 };

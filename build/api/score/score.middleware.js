@@ -23,8 +23,8 @@ const createScoreValidator = _joi2.default.object().keys({
   result: _joi2.default.array().items(_joi2.default.object().keys({
     subject: _joi2.default.objectId().required(),
     subjectName: _joi2.default.string().required(),
-    socre: _joi2.default.number()
-  }).with('subject', 'score').with('subject', 'subjectName'))
+    socre: _joi2.default.number().max(101).min(0)
+  }))
 });
 
 const updateScoreValidator = _joi2.default.object().keys({
@@ -33,8 +33,8 @@ const updateScoreValidator = _joi2.default.object().keys({
   result: _joi2.default.array().items(_joi2.default.object().keys({
     subject: _joi2.default.objectId(),
     subjectName: _joi2.default.string(),
-    socre: _joi2.default.number()
-  }).with('subject', 'score').with('subject', 'subjectName'))
+    socre: _joi2.default.number().max(101).min(0)
+  }))
 });
 
 const validator = (req, schema) => {

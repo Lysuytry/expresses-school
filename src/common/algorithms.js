@@ -8,7 +8,7 @@ export const fliterAlgorithms = (data) => {
   const partternName = new nameParttern(name, gender);
   //projection
   const fliterProject = {
-    fullname: { $concat: ['$first','$last']}, fullnameReverse: { $concat: ['$last','$first']}, first: 1, last: 1, gender: 1, status: 1};
+    fullname: { $concat: ['$first','$last']}, fullnameReverse: { $concat: ['$last','$first']}, first: 1, last: 1, gender: 1, status: 1, birthday: 1, email: 1, telephone: 1};
   //Fliter name by reverse or normal
   const fliterName = name ? {$or:
     [ {fullname: {$in: [partternName.getFullnameRegExp(), partternName.getReverseRegExp()]}},
