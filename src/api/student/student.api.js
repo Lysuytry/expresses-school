@@ -58,13 +58,72 @@ export const deleteStudentById = async (req, res) => {
   try{
     const {id} = req.params;
     const {status} = req.query;
-    const conditions = [{_id: id, status}, {$set: {status: 'inactive'}}];
-    await Student.updateOne(...conditions);
+    await Student.updateOne({_id: id, status}, {$set: {status: 'inactive'}});
     res.success('Succesfully deleted.');
   } catch(error){
     res.fail(error.message);
   }
 };
+
+//////////////
+//    Used via aggregate function
+// export const getStudentSubjectsById = async (req, res) => {
+//   try{
+//     const { id } = req.params;
+//     const { status } = req.query;
+//     //from algorithms.js
+//     const conditions = joinSubjectById(id, status);
+//     //.....
+//     const student = await Student.aggregate(conditions);
+//     student ? res.success(student) : res.success({});
+//   } catch(error){
+//     res.fail(error);
+//   }
+// };
+//////////////////
+//    Used via population mongoose
+export const getStudentSubjectsById = async (req, res) => {
+  try{
+    const { id } = req.params;
+    const { status } = req.query;
+    const studentField = '_id first last';
+    const student = await Student.findOne({_id: id, status}, studentField).populate({ path: 'subjects', select: '_id name'});
+    student ? res.success(student) : res.success({});
+  } catch(error){
+    res.fail(error);
+  }
+};
+
+///////////////////
+//    used to update or deleted subject from student
+export const updateStudentSubjectById = async (req, res) => {
+  try{
+    const { id } = req.params;
+    const { status } = req.query;
+    const conditions = {_id: id, status};
+    const { subjects } = req.body;
+    await Student.update(conditions, {$addToSet: {subjects} });
+    res.success('Successfully updated.');
+  } catch(error){
+    res.fail(error);
+  }
+};
+///////////////////
+//    used to deleted or deleted subject from student
+export const deleteStudentSubjectById = async (req, res) => {
+  try{
+    const { id, subId } = req.params;
+    const { status } = req.query;
+    const conditions = {_id: id, status};
+    await Student.update(conditions, {$pull: {subjects: subId} }, {multi: true});
+    res.success('Successfully deleted field.');
+  } catch(error){
+    res.fail(error);
+  }
+};
+
+
+//////////////
 
 export const fakeStudent = async (req, res) => {
   try{

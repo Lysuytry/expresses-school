@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fakeStudent = exports.deleteStudentById = exports.updateStudentById = exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
+exports.fakeStudent = exports.deleteStudentSubjectById = exports.updateStudentSubjectById = exports.getStudentSubjectsById = exports.deleteStudentById = exports.updateStudentById = exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
 
 var _student = require('../../models/student');
 
@@ -71,13 +71,71 @@ const deleteStudentById = exports.deleteStudentById = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.query;
-    const conditions = [{ _id: id, status }, { $set: { status: 'inactive' } }];
-    await _student2.default.updateOne(...conditions);
+    await _student2.default.updateOne({ _id: id, status }, { $set: { status: 'inactive' } });
     res.success('Succesfully deleted.');
   } catch (error) {
     res.fail(error.message);
   }
 };
+
+//////////////
+//    Used via aggregate function
+// export const getStudentSubjectsById = async (req, res) => {
+//   try{
+//     const { id } = req.params;
+//     const { status } = req.query;
+//     //from algorithms.js
+//     const conditions = joinSubjectById(id, status);
+//     //.....
+//     const student = await Student.aggregate(conditions);
+//     student ? res.success(student) : res.success({});
+//   } catch(error){
+//     res.fail(error);
+//   }
+// };
+//////////////////
+//    Used via population mongoose
+const getStudentSubjectsById = exports.getStudentSubjectsById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.query;
+    const studentField = '_id first last';
+    const student = await _student2.default.findOne({ _id: id, status }, studentField).populate({ path: 'subjects', select: '_id name' });
+    student ? res.success(student) : res.success({});
+  } catch (error) {
+    res.fail(error);
+  }
+};
+
+///////////////////
+//    used to update or deleted subject from student
+const updateStudentSubjectById = exports.updateStudentSubjectById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.query;
+    const conditions = { _id: id, status };
+    const { subjects } = req.body;
+    await _student2.default.update(conditions, { $addToSet: { subjects } });
+    res.success('Successfully updated.');
+  } catch (error) {
+    res.fail(error);
+  }
+};
+///////////////////
+//    used to deleted or deleted subject from student
+const deleteStudentSubjectById = exports.deleteStudentSubjectById = async (req, res) => {
+  try {
+    const { id, subId } = req.params;
+    const { status } = req.query;
+    const conditions = { _id: id, status };
+    await _student2.default.update(conditions, { $pull: { subjects: subId } }, { multi: true });
+    res.success('Successfully deleted field.');
+  } catch (error) {
+    res.fail(error);
+  }
+};
+
+//////////////
 
 const fakeStudent = exports.fakeStudent = async (req, res) => {
   try {

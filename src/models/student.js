@@ -15,6 +15,6 @@ studentSchema.virtual('fullname').get(function() {
   return `${this.first}${this.last}`;
 });
 
-studentSchema.set('toJSON', { virtuals: true});
+studentSchema.set('toJSON', { virtuals: false});
 
 export default mongoose.model('Student', studentSchema);

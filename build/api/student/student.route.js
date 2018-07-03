@@ -18,6 +18,9 @@ studentRoute.get('/students/dump', _student.fakeStudent);
 studentRoute.get('/students/:id', _student.getStudentById);
 studentRoute.put('/students/:id', _student2.validateUpdatingStudent, _student.updateStudentById);
 studentRoute.delete('/students/:id', _student.deleteStudentById);
+studentRoute.get('/students/:id/subjects', _student.getStudentSubjectsById);
+studentRoute.put('/students/:id/subjects', _student.updateStudentSubjectById);
+studentRoute.delete('/students/:id/subjects/:subId', _student.deleteStudentSubjectById);
 
 exports.default = studentRoute;
 //# sourceMappingURL=student.route.js.map

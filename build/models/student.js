@@ -25,7 +25,7 @@ studentSchema.virtual('fullname').get(function () {
   return `${this.first}${this.last}`;
 });
 
-studentSchema.set('toJSON', { virtuals: true });
+studentSchema.set('toJSON', { virtuals: false });
 
 exports.default = _mongoose2.default.model('Student', studentSchema);
 //# sourceMappingURL=student.js.map
