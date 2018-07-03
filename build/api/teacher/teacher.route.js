@@ -14,6 +14,7 @@ const teacherRoute = (0, _express.Router)();
 
 teacherRoute.get('/teachers', _teacher2.validateQueryTeacher, _teacher.getTeacherList);
 teacherRoute.post('/teachers', _teacher2.validateCreatingTeacher, _teacher.createTeacher);
+teacherRoute.get('/teachers/dump', _teacher.fakeCreate);
 teacherRoute.get('/teachers/:id', _teacher.getTeacherById);
 teacherRoute.put('/teachers/:id', _teacher2.validateUpdatingTeacher, _teacher.updateTeacher);
 teacherRoute.delete('/teachers/:id', _teacher.deleteTeacher);

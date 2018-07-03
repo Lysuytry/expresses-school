@@ -1,4 +1,5 @@
 import Subject from '../../models/subject';
+import { fakerSubject } from '../../common/dump';
 
 export const createSubject = async (req, res) => {
   try{
@@ -58,6 +59,16 @@ export const deleteSubjectById = async (req, res) => {
     res.success('Successfully deleted.');
   } catch(error){
     res.fail(error.message);
+  }
+};
+
+export const fakeSubject = async (req, res) => {
+  try{
+    const subject = new Subject(fakerSubject);
+    await subject.save();
+    res.success('ss');
+  }catch(error){
+    res.fail(error);
   }
 };
 

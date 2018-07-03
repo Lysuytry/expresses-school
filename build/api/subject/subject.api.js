@@ -3,11 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteSubjectById = exports.updateSubjectById = exports.getSubjectById = exports.getSubjectList = exports.createSubject = undefined;
+exports.fakeSubject = exports.deleteSubjectById = exports.updateSubjectById = exports.getSubjectById = exports.getSubjectList = exports.createSubject = undefined;
 
 var _subject = require('../../models/subject');
 
 var _subject2 = _interopRequireDefault(_subject);
+
+var _dump = require('../../common/dump');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -69,6 +71,16 @@ const deleteSubjectById = exports.deleteSubjectById = async (req, res) => {
     res.success('Successfully deleted.');
   } catch (error) {
     res.fail(error.message);
+  }
+};
+
+const fakeSubject = exports.fakeSubject = async (req, res) => {
+  try {
+    const subject = new _subject2.default(_dump.fakerSubject);
+    await subject.save();
+    res.success('ss');
+  } catch (error) {
+    res.fail(error);
   }
 };
 //# sourceMappingURL=subject.api.js.map

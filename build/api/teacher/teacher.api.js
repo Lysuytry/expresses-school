@@ -3,11 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteTeacher = exports.updateTeacher = exports.createTeacher = exports.getTeacherById = exports.getTeacherList = undefined;
+exports.fakeCreate = exports.deleteTeacher = exports.updateTeacher = exports.createTeacher = exports.getTeacherById = exports.getTeacherList = undefined;
 
 var _teacher = require('../../models/teacher');
 
 var _teacher2 = _interopRequireDefault(_teacher);
+
+var _dump = require('../../common/dump');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -66,6 +68,19 @@ const deleteTeacher = exports.deleteTeacher = async (req, res) => {
     res.success('Deleted successfully.');
   } catch (error) {
     res.fail(error.message);
+  }
+};
+
+const fakeCreate = exports.fakeCreate = async (req, res) => {
+  try {
+    let teachers = [];
+    for (let i = 0; i < 5; i++) {
+      teachers[i] = _dump.fakerTeacher;
+    }
+    await _teacher2.default.insertMany(teachers);
+    res.success('ss');
+  } catch (error) {
+    res.fail(error);
   }
 };
 //# sourceMappingURL=teacher.api.js.map

@@ -1,4 +1,5 @@
 import Student from '../../models/student';
+import {fakerStudent} from '../../common/dump';
 
 export const getStudentList = async (req, res) => {
   try{
@@ -60,5 +61,15 @@ export const deleteStudentById = async (req, res) => {
     res.success('Succesfully deleted.');
   } catch(error){
     res.fail(error.message);
+  }
+};
+
+export const fakeStudent = async (req, res) => {
+  try{
+    const student = new Student(fakerStudent);
+    await student.save();
+    res.success('ss');
+  }catch(error){
+    res.fail(error);
   }
 };

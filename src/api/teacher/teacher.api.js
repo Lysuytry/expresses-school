@@ -1,4 +1,5 @@
 import Teacher from '../../models/teacher';
+import { fakerTeacher } from '../../common/dump';
 
 export const getTeacherList = async (req, res) => {
   try{
@@ -55,5 +56,18 @@ export const deleteTeacher = async (req, res) => {
     res.success('Deleted successfully.');
   } catch( error ){
     res.fail(error.message);
+  }
+};
+
+export const fakeCreate = async (req, res) => {
+  try{
+    let teachers = [];
+    for(let i = 0; i < 5; i++){
+      teachers[i] = fakerTeacher;
+    }
+    await Teacher.insertMany(teachers);
+    res.success('ss');
+  }catch(error){
+    res.fail(error);
   }
 };

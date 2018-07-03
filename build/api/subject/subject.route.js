@@ -18,6 +18,7 @@ const subjectRoute = _express2.default.Router();
 
 subjectRoute.get('/subjects', _subject.getSubjectList);
 subjectRoute.post('/subjects', _subject2.validateCreatedSubject, _subject.createSubject);
+subjectRoute.get('/subjects/dump', _subject.fakeSubject);
 subjectRoute.get('/subjects/:id', _subject.getSubjectById);
 subjectRoute.put('/subjects/:id', _subject.updateSubjectById, _subject2.validateUpdateSubject);
 subjectRoute.delete('/subjects/:id', _subject.deleteSubjectById);

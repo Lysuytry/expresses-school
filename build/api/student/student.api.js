@@ -3,13 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteStudentById = exports.updateStudentById = exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
+exports.fakeStudent = exports.deleteStudentById = exports.updateStudentById = exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _student = require('../../models/student');
 
 var _student2 = _interopRequireDefault(_student);
+
+var _dump = require('../../common/dump');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -73,6 +75,16 @@ const deleteStudentById = exports.deleteStudentById = async (req, res) => {
     res.success('Succesfully deleted.');
   } catch (error) {
     res.fail(error.message);
+  }
+};
+
+const fakeStudent = exports.fakeStudent = async (req, res) => {
+  try {
+    const student = new _student2.default(_dump.fakerStudent);
+    await student.save();
+    res.success('ss');
+  } catch (error) {
+    res.fail(error);
   }
 };
 //# sourceMappingURL=student.api.js.map
