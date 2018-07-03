@@ -12,7 +12,7 @@ const studentSchema = Schema({
 }, {timestamps: true});
 
 studentSchema.virtual('fullname').get(function() {
-  return `${this.first} ${this.last}`;
+  return `${this.first}${this.last}`;
 });
 
 studentSchema.set('toJSON', { virtuals: true});

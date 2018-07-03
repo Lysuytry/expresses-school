@@ -1,13 +1,15 @@
 import Teacher from '../../models/teacher';
 import { fakerTeacher } from '../../common/dump';
+import { fliterAlgorithms } from '../../common/algorithms';
 
 export const getTeacherList = async (req, res) => {
   try{
-    const {status, limit, skip} = req.query;
+    const {limit, skip} = req.query;
+    const [find, count] = fliterAlgorithms(req.query);
     //const fliterMatch = {status};
-    const conditions = { status };
-    const [teachers, total] = await Promise.all([ Teacher.find(conditions).skip(skip).limit(limit), Teacher.count(conditions)]);
-    res.success(teachers, {limit, skip, total});
+    const [teachers, total] = await Promise.all([ Teacher.aggregate(find), Teacher.aggregate(count)]);
+    const amount = total[0].total;
+    res.success(teachers, {limit, skip, amount});
   } catch(error){
     res.fail(error.message);
   }

@@ -1,13 +1,14 @@
 import Student from '../../models/student';
 import {fakerStudent} from '../../common/dump';
+import {fliterAlgorithms} from '../../common/algorithms';
 
 export const getStudentList = async (req, res) => {
   try{
-    const {limit, skip, status} = req.query;
-    const fliterMatch = {$and: [{status}]};
-    const countCondition = [{status} ];
-    const conditions = [ {$match: {...fliterMatch}}, {$skip: skip}, {$limit: limit}];
-    const [students, total] = await Promise.all([Student.aggregate(conditions), Student.count(...countCondition)]);
+    const {limit, skip} = req.query;
+    // ./common/algorithms.js
+    const [find, count] = fliterAlgorithms(req.query);
+    const [students, amount] = await Promise.all([Student.aggregate(find), Student.aggregate(count)]);
+    const total = amount[0].total;
     const options = {limit, skip, total};
     res.success(students, options);
   } catch( error ){
@@ -29,6 +30,7 @@ export const createStudent = async (req, res) => {
 
 export const getStudentById = async (req, res) => {
   try{
+
     const { id } = req.params;
     const { status } = req.query;
     const student = await Student.findOne({_id: id, status});

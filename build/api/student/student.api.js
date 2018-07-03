@@ -5,23 +5,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.fakeStudent = exports.deleteStudentById = exports.updateStudentById = exports.getStudentById = exports.createStudent = exports.getStudentList = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _student = require('../../models/student');
 
 var _student2 = _interopRequireDefault(_student);
 
 var _dump = require('../../common/dump');
 
+var _algorithms = require('../../common/algorithms');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const getStudentList = exports.getStudentList = async (req, res) => {
   try {
-    const { limit, skip, status } = req.query;
-    const fliterMatch = { $and: [{ status }] };
-    const countCondition = [{ status }];
-    const conditions = [{ $match: _extends({}, fliterMatch) }, { $skip: skip }, { $limit: limit }];
-    const [students, total] = await Promise.all([_student2.default.aggregate(conditions), _student2.default.count(...countCondition)]);
+    const { limit, skip } = req.query;
+    // ./common/algorithms.js
+    const [find, count] = (0, _algorithms.fliterAlgorithms)(req.query);
+    const [students, amount] = await Promise.all([_student2.default.aggregate(find), _student2.default.aggregate(count)]);
+    const total = amount[0].total;
     const options = { limit, skip, total };
     res.success(students, options);
   } catch (error) {
@@ -43,6 +43,7 @@ const createStudent = exports.createStudent = async (req, res) => {
 
 const getStudentById = exports.getStudentById = async (req, res) => {
   try {
+
     const { id } = req.params;
     const { status } = req.query;
     const student = await _student2.default.findOne({ _id: id, status });

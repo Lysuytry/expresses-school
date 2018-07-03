@@ -11,15 +11,18 @@ var _teacher2 = _interopRequireDefault(_teacher);
 
 var _dump = require('../../common/dump');
 
+var _algorithms = require('../../common/algorithms');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const getTeacherList = exports.getTeacherList = async (req, res) => {
   try {
-    const { status, limit, skip } = req.query;
+    const { limit, skip } = req.query;
+    const [find, count] = (0, _algorithms.fliterAlgorithms)(req.query);
     //const fliterMatch = {status};
-    const conditions = { status };
-    const [teachers, total] = await Promise.all([_teacher2.default.find(conditions).skip(skip).limit(limit), _teacher2.default.count(conditions)]);
-    res.success(teachers, { limit, skip, total });
+    const [teachers, total] = await Promise.all([_teacher2.default.aggregate(find), _teacher2.default.aggregate(count)]);
+    const amount = total[0].total;
+    res.success(teachers, { limit, skip, amount });
   } catch (error) {
     res.fail(error.message);
   }
